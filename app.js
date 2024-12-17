@@ -1,7 +1,3 @@
-
-
-
-
 const express = require("express");
 const app = express();
 const server = require("http").createServer(app);
@@ -15,12 +11,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const usernames = [];
 const userids = [];
-const messages = []; // Mocking message persistence
+const messages = []; 
 
 io.on("connection", (socket) => {
   console.log("user connected");
 
-  // Emit chat history when a user connects
   socket.emit("chatHistory", messages);
 
   socket.on("disconnect", () => {
@@ -40,7 +35,7 @@ io.on("connection", (socket) => {
     io.emit("updateUserList", usernames);
   });
 
-  // Handling typing indicator
+
   socket.on("typing", (name) => {
     socket.broadcast.emit("typing", name);
   });
@@ -51,7 +46,7 @@ io.on("connection", (socket) => {
     const timestamp = new Date().toLocaleTimeString();
     const messageDetails = { message: message.trim(), username, id: socket.id, timestamp };
 
-    messages.push(messageDetails); // Persist message (mocked with an array)
+    messages.push(messageDetails); 
     io.emit("message", messageDetails);
   });
 });
